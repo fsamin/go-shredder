@@ -81,3 +81,8 @@ func (s Chunks) Swap(i, j int) {
 func (s Chunks) Less(i, j int) bool {
 	return s[i].Offset < s[j].Offset
 }
+
+//Context returns the context
+func (s Chunks) Context() *Ctx {
+	return s[0].Ctx
+}
