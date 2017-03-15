@@ -1,12 +1,11 @@
 package shredder
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"sort"
-
-	"bytes"
 
 	"github.com/satori/go.uuid"
 )
@@ -31,9 +30,12 @@ func ShredFile(filename string, opts *Opts) (Chunks, error) {
 
 // Shred shreds a byte array into a an array of chunks according to options. You can pass nil as option, chunks size will be 512 bytes.
 // You can define Encryption option such as GPG or AES. See GPGEncryption and AESEncryption structures.
-func Shred(content []byte, opts *Opts) (Chunks, error) {
+func Shred(content []byte, id string, opts *Opts) (Chunks, error) {
+	if id == "" {
+		id = uuid.NewV4().String()
+	}
 	ctx := &Ctx{
-		UUID:        uuid.NewV4().String(),
+		UUID:        id,
 		ContentType: BytesContentType,
 		Opts:        opts,
 		content:     content,
