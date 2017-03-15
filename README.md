@@ -2,8 +2,7 @@
 
 Go-Shredder is a package which helps you to split a file, or a byte array into chunks. You wan also encrypt the content with GnuPG or AES encryption.
 
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)]
-(http://godoc.org/github.com/fsamin/go-shredder) [![Build Status](https://travis-ci.org/fsamin/go-shredder.svg?branch=master)](https://travis-ci.org/fsamin/go-shredder) [![Go Report Card](https://goreportcard.com/badge/github.com/fsamin/go-shredder)](https://goreportcard.com/report/github.com/fsamin/go-shredder)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/fsamin/go-shredder) [![Build Status](https://travis-ci.org/fsamin/go-shredder.svg?branch=master)](https://travis-ci.org/fsamin/go-shredder) [![Go Report Card](https://goreportcard.com/badge/github.com/fsamin/go-shredder)](https://goreportcard.com/report/github.com/fsamin/go-shredder)
 
 ## Sample usages
 
