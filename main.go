@@ -2,7 +2,6 @@ package shredder
 
 import (
 	"bytes"
-	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"sort"
@@ -11,10 +10,9 @@ import (
 )
 
 // ShredFile shreds a file content. See Shred for more details
-func ShredFile(filename string, opts *Opts) (Chunks, error) {
-	uuid := base64.StdEncoding.EncodeToString([]byte(filename))
+func ShredFile(filename string, id string, opts *Opts) (Chunks, error) {
 	ctx := &Ctx{
-		UUID:        string(uuid),
+		UUID:        id + "&filename=" + filename,
 		ContentType: FileContentType,
 		Opts:        opts,
 	}

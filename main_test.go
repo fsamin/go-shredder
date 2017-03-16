@@ -8,7 +8,7 @@ import (
 )
 
 func TestShredAndReassemble(t *testing.T) {
-	chunks, err := ShredFile("main.go", &Opts{
+	chunks, err := ShredFile("main.go", "id", &Opts{
 		GPGEncryption: &GPGEncryption{
 			PublicKey: []byte(publicKey),
 		},
@@ -23,6 +23,11 @@ func TestShredAndReassemble(t *testing.T) {
 		},
 		ChunkSize: 100,
 	})
+
+	assert.Equal(t, "id", content.getUUID())
+	filename, _, _ := content.File()
+	assert.Equal(t, "main.go", filename)
+
 	assert.NoError(t, err)
 
 	expected, err := ioutil.ReadFile("main.go")
