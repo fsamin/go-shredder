@@ -30,7 +30,7 @@ func (ctx *Ctx) Bytes() []byte {
 	return ctx.content
 }
 
-func (ctx *Ctx) getUUID() string {
+func (ctx *Ctx) GetUUID() string {
 	if ctx.ContentType != FileContentType || !strings.Contains(ctx.UUID, "&filename=") {
 		return ctx.UUID
 	}

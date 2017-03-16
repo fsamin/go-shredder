@@ -24,7 +24,7 @@ func TestShredAndReassemble(t *testing.T) {
 		ChunkSize: 100,
 	})
 
-	assert.Equal(t, "id", content.getUUID())
+	assert.Equal(t, "id", content.GetUUID())
 	filename, _, _ := content.File()
 	assert.Equal(t, "main.go", filename)
 
