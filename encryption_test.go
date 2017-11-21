@@ -3,6 +3,7 @@ package shredder
 import (
 	"bytes"
 	"io"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -47,19 +48,20 @@ func Test_gpgEncrypt(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		encrypted, err := gpgEncrypt(tt.args.opt, tt.args.content)
+		encrypted, err := GPGEncrypt(tt.args.opt.PublicKey, tt.args.content)
 		if (err != nil) != tt.wantErrOnEncrypt {
 			t.Errorf("%q. gpgEncrypt() error = %v, wantErr %v", tt.name, err, tt.wantErrOnEncrypt)
 			continue
 		}
 
-		decrypted, err := gpgDecrypt(tt.args.opt, bytes.NewBuffer(encrypted))
+		decrypted, err := GPGDecrypt(tt.args.opt.PrivateKey, tt.args.opt.Passphrase, encrypted)
 		if (err != nil) != tt.wantErrOnDecrypt {
 			t.Errorf("%q. gpgDecrypt() error = %v, wantErr %v", tt.name, err, tt.wantErrOnDecrypt)
 			continue
 		}
 		if !tt.wantErrOnEncrypt && !tt.wantErrOnDecrypt {
-			assert.Equal(t, "this is a secret message", string(decrypted))
+			b, _ := ioutil.ReadAll(decrypted)
+			assert.Equal(t, "this is a secret message", string(b))
 		}
 	}
 }
@@ -103,7 +105,7 @@ func Test_aesEncrypt(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		encrypted, err := aesEncrypt(tt.args.opt, tt.args.content)
+		encrypted, err := AESEncrypt(tt.args.opt.Key, tt.args.content)
 		if (err != nil) != tt.wantErrOnEncrypt {
 			t.Errorf("%q. aesEncrypt() error = %v, wantErr %v", tt.name, err, tt.wantErrOnEncrypt)
 			continue
@@ -114,15 +116,18 @@ func Test_aesEncrypt(t *testing.T) {
 			o = tt.args.optDecrypt
 		}
 
-		decrypted, err := aesDecrypt(o, bytes.NewBuffer(encrypted))
+		decrypted, err := AESDecrypt(o.Key, encrypted)
 		if (err != nil) != tt.wantErrOnDecrypt {
 			t.Errorf("%q. aesDecrypt() error = %v, wantErr %v", tt.name, err, tt.wantErrOnDecrypt)
 			continue
-		}
-		if !tt.wantDecryptNotSuccess {
-			assert.Equal(t, "this is a secret message", string(decrypted))
-		} else {
-			assert.NotEqual(t, "this is a secret message", string(decrypted))
+		} else if decrypted != nil {
+			b, _ := ioutil.ReadAll(decrypted)
+
+			if !tt.wantDecryptNotSuccess {
+				assert.Equal(t, "this is a secret message", string(b))
+			} else {
+				assert.NotEqual(t, "this is a secret message", string(b))
+			}
 		}
 	}
 }
