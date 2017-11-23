@@ -1,10 +1,9 @@
 language: go
 
 go:
-  - 1.7.x
   - tip
   - master
 
 script:
-  - go test ./...
+  - go test
   - go build
